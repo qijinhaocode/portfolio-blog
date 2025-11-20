@@ -1,26 +1,106 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fdf6e3; /* A soft, beige background */
+  --foreground: #333333; /* Dark text for readability */
+  --accent: #268bd2; /* A nice blue for accents */
+  --secondary-accent: #d33682; /* A secondary accent color */
+  --font-pixel: var(--font-vt323), monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-pixel);
+  font-size: 18px;
+  line-height: 1.7;
 }
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom-color 0.2s ease-in-out;
+}
+
+a:hover {
+  border-bottom-color: var(--accent);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--foreground);
+  font-weight: normal;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+
+/* Pixelated border style */
+.pixel-box {
+  border: 2px solid var(--foreground);
+  box-shadow: 4px 4px 0px var(--foreground);
+  background-color: var(--background);
+  padding: 1rem;
+}
+
+.search-input {
+  width: 100%;
+  border: 2px solid var(--foreground);
+  background-color: var(--background);
+  color: var(--foreground);
+  padding: 0.5rem 1rem;
+  font-family: var(--font-pixel);
+  font-size: 1rem;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.search-results {
+  position: absolute;
+  width: 100%;
+  margin-top: 0.5rem;
+  border: 2px solid var(--foreground);
+  background-color: var(--background);
+  z-index: 10;
+}
+
+.search-results a {
+  display: block;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--foreground);
+}
+
+.search-results a:last-child {
+  border-bottom: none;
+}
+
+.search-results a:hover {
+  background-color: var(--accent);
+  color: var(--background);
+}
+
+header, footer {
+    border-top: 2px solid var(--foreground);
+    border-bottom: 2px solid var(--foreground);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
