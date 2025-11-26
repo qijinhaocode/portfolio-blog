@@ -3,15 +3,17 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 type Props = {
-  params: {
+  // In Next 15 params/searchParams are provided as promises for async routes
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 // Dynamically generate metadata for the page
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
   try {
-    const postData = await getPostData(params.slug);
+    const postData = await getPostData(slug);
     return {
       title: postData.title,
       description: postData.excerpt,
@@ -31,7 +33,8 @@ export async function generateStaticParams() {
 
 export default async function Post({ params }: Props) {
   try {
-    const postData = await getPostData(params.slug);
+    const { slug } = await params;
+    const postData = await getPostData(slug);
 
     return (
       <article>
