@@ -202,3 +202,49 @@ jobs:
 ```
 
 *根据自身情况调整分支名、部署目录和启动命令。*
+
+---
+
+## 第四部分：使用自定义域名通过 Nginx 反向代理
+
+以下步骤假设应用在本机 `127.0.0.1:3000` 运行，可根据实际端口调整。
+
+1) 安装 Nginx（Ubuntu/Debian）
+```bash
+sudo apt update && sudo apt install nginx -y
+# 开放 80/443（如果使用 ufw）
+sudo ufw allow 'Nginx Full'
+```
+
+2) 新建站点配置 `/etc/nginx/sites-available/yourdomain.conf`
+```nginx
+server {
+  listen 80;
+  server_name yourdomain.com www.yourdomain.com;
+
+  location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+}
+```
+将 `yourdomain.com` 替换为你的域名，端口按需改动。 我的domain 是 qijinhao.com
+
+3) 启用配置并重载 Nginx
+```bash
+sudo ln -s /etc/nginx/sites-available/qijinhao.com.conf/etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+4) DNS 解析
+在域名 DNS 控制台添加 A 记录（`@` 和/或 `www`）指向服务器公网 IP，待生效后即可用域名访问，无需端口号。
+
+5) 可选：开启 HTTPS（推荐）
+```bash
+sudo apt install certbot python3-certbot-nginx -y
+sudo certbot --nginx -d qijinhao.com -d www.qijinhao.com
+```
+按提示完成证书申请与自动配置。Certbot 会设置自动续期。*** End Patch```कर्त
